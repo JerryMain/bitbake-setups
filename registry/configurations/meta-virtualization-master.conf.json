@@ -1,0 +1,35 @@
+{
+    "description": "OpenEmbedded 'nodistro' with meta-virtualization (minimal)",
+    "sources": {
+        "bitbake":             { "git-remote": { "uri": "https://git.openembedded.org/bitbake",             "branch": "master", "rev": "master" } },
+        "openembedded-core":   { "git-remote": { "uri": "https://git.openembedded.org/openembedded-core",   "branch": "master", "rev": "master" } },
+        "meta-openembedded":   { "git-remote": { "uri": "https://git.openembedded.org/meta-openembedded",   "branch": "master", "rev": "master" } },
+        "meta-virtualization": { "git-remote": { "uri": "https://git.yoctoproject.org/meta-virtualization", "branch": "master", "rev": "master" } }
+    },
+    "bitbake-setup": {
+        "configurations": [
+        {
+            "name": "nodistro-virt",
+            "description": "OpenEmbedded 'nodistro' with meta-virtualization",
+            "setup-dir-name": "yocto-builder",
+            "bb-layers": [
+                "openembedded-core/meta",
+                "meta-openembedded/meta-oe", "meta-openembedded/meta-python",
+                "meta-openembedded/meta-networking", "meta-openembedded/meta-filesystems",
+                "meta-virtualization"
+            ],
+            "oe-fragments": ["core/yocto/monitor-disk-space"],
+            "oe-fragments-one-of": {
+                "machine": {
+                    "description": "Target machines",
+                    "options": [
+                        { "name": "machine/qemux86-64", "description": "x86-64 system on QEMU" },
+                        { "name": "machine/qemuarm64", "description": "ARMv8 system on QEMU" }
+                    ]
+                }
+            }
+        }
+        ]
+    },
+    "version": "1.0"
+}

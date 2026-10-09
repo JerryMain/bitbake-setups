@@ -1,0 +1,3 @@
+[submodule "bitbake"]
+	path = bitbake
+	url = ./bitbake

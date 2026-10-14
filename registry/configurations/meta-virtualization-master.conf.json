@@ -28,6 +28,85 @@
                     ]
                 }
             }
+        },
+        {
+            "name": "nodistro-oci",
+            "description": "OpenEmbedded 'nodistro' with meta-virtualization, for building OCI container images only",
+            "setup-dir-name": "nodistro-oci",
+            "bb-layers": [
+                "openembedded-core/meta",
+                "meta-openembedded/meta-oe", "meta-openembedded/meta-python",
+                "meta-openembedded/meta-networking", "meta-openembedded/meta-filesystems",
+                "meta-virtualization"
+            ],
+            "bb-layers-file-relative": ["../../meta-virt-setup"],
+            "oe-fragments": ["core/yocto/monitor-disk-space"],
+            "oe-fragments-one-of": {
+                "machine": {
+                    "description": "Target machines (the container architecture)",
+                    "options": [
+                        { "name": "machine/qemux86-64", "description": "x86-64 system on QEMU" },
+                        { "name": "machine/qemuarm64", "description": "ARMv8 system on QEMU" }
+                    ]
+                },
+                "package": {
+                    "description": "Package format",
+                    "options": [
+                        { "name": "meta-virt-setup/package/ipk", "description": "ipk (opkg)" },
+                        { "name": "meta-virt-setup/package/rpm", "description": "rpm (dnf)" }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "nodistro-vcontainer",
+            "description": "OpenEmbedded 'nodistro' with the meta-virtualization vcontainer SDK (x86_64)",
+            "setup-dir-name": "vcontainer",
+            "bb-layers": [
+                "openembedded-core/meta",
+                "meta-openembedded/meta-oe", "meta-openembedded/meta-python",
+                "meta-openembedded/meta-networking", "meta-openembedded/meta-filesystems",
+                "meta-virtualization"
+            ],
+            "bb-layers-file-relative": ["../../meta-virt-setup"],
+            "oe-fragments": ["core/yocto/monitor-disk-space", "meta-virt-setup/vcontainer-sdk/x86-64"],
+            "oe-fragments-one-of": {
+                "machine": {
+                    "description": "Target machines",
+                    "options": [
+                        { "name": "machine/qemux86-64", "description": "x86-64 system on QEMU" }
+                    ]
+                },
+                "vdkr": {
+                    "description": "vdkr (Docker in a QEMU VM)",
+                    "options": [
+                        { "name": "meta-virt-setup/vcontainer-sdk/vdkr-x86-64", "description": "Include vdkr" },
+                        { "name": "meta-virt-setup/vcontainer-sdk/no-vdkr", "description": "Leave vdkr out" }
+                    ]
+                },
+                "vpdmn": {
+                    "description": "vpdmn (Podman in a QEMU VM)",
+                    "options": [
+                        { "name": "meta-virt-setup/vcontainer-sdk/vpdmn-x86-64", "description": "Include vpdmn" },
+                        { "name": "meta-virt-setup/vcontainer-sdk/no-vpdmn", "description": "Leave vpdmn out" }
+                    ]
+                },
+                "vxn": {
+                    "description": "vxn (containers as Xen DomUs)",
+                    "options": [
+                        { "name": "meta-virt-setup/vcontainer-sdk/no-vxn", "description": "Leave vxn out" },
+                        { "name": "meta-virt-setup/vcontainer-sdk/vxn-x86-64", "description": "Include vxn, docker dom0" },
+                        { "name": "meta-virt-setup/vcontainer-sdk/vxn-podman-x86-64", "description": "Include vxn, docker and podman dom0" }
+                    ]
+                },
+                "aarch64": {
+                    "description": "aarch64 runtime for vdkr/vpdmn",
+                    "options": [
+                        { "name": "meta-virt-setup/vcontainer-sdk/no-aarch64", "description": "x86_64 only" },
+                        { "name": "meta-virt-setup/vcontainer-sdk/aarch64", "description": "Also build the aarch64 VMs" }
+                    ]
+                }
+            }
         }
         ]
     },
